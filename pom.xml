@@ -3,6 +3,24 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Avant </project> -->
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<url>http://nexus:8081/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<url>http://nexus:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<properties>
+		<!-- ... vos properties existantes ... -->
+		<sonar.projectKey>demande-credit-backend</sonar.projectKey>
+		<sonar.host.url>http://sonarqube:9000</sonar.host.url>
+	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
