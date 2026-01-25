@@ -34,24 +34,29 @@ public class LigneCreditService {
         ligneCreditRepository.save(ligneCredit);
 }
 
-    @Transactional
-    public void updateLigne(LigneCredit ligneCredit) {
-        long id = ligneCredit.getId();
-        LigneCredit existingLigne = ligneCreditRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("LigneCredit non trouvée"));
+   @Transactional
+   public void updateLigne(LigneCredit ligneCredit) {
+       long id = ligneCredit.getId();
 
-        existingLigne.setDateEcheance(ligneCredit.getDateEcheance());
-        existingLigne.setDevise(ligneCredit.getDevise());
-        existingLigne.setFamille(ligneCredit.getFamille());
-        existingLigne.setMarge(ligneCredit.getMarge());
-        existingLigne.setMontant(ligneCredit.getMontant());
-        existingLigne.setMontantcontreValeur(ligneCredit.getMontantcontreValeur());
-        existingLigne.setNature(ligneCredit.getNature());
-        existingLigne.setTaux(ligneCredit.getTaux());
-        existingLigne.setType(ligneCredit.getType());
-        existingLigne.setTypetaux(ligneCredit.getTypetaux());
+       if (!ligneCreditRepository.existsById(id)) {
+           throw new IllegalStateException("LigneCredit non trouvée");
+       }
 
-    }
+       LigneCredit existingLigne = ligneCreditRepository.findById(id).get();
+
+       existingLigne.setDateEcheance(ligneCredit.getDateEcheance());
+       existingLigne.setDevise(ligneCredit.getDevise());
+       existingLigne.setFamille(ligneCredit.getFamille());
+       existingLigne.setMarge(ligneCredit.getMarge());
+       existingLigne.setMontant(ligneCredit.getMontant());
+       existingLigne.setMontantcontreValeur(ligneCredit.getMontantcontreValeur());
+       existingLigne.setNature(ligneCredit.getNature());
+       existingLigne.setTaux(ligneCredit.getTaux());
+       existingLigne.setType(ligneCredit.getType());
+       existingLigne.setTypetaux(ligneCredit.getTypetaux());
+       ligneCreditRepository.save(existingLigne);
+   }
+
 
     public void deleteLigneById(long id) {
         if (!ligneCreditRepository.existsById(id)) {

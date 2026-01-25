@@ -40,32 +40,17 @@ public class DossierCreditService {
         return dossierCreditRepository.findByAssigneA(assigneA);
     }
 
-    @Transactional
-    public void updateDossier(DossierCredit dossierCredit) {
-        // 1. Load existing dossier from DB
-        DossierCredit existingDossier = dossierCreditRepository.findById(dossierCredit.getId())
-                .orElseThrow(() -> new IllegalStateException("DossierCredit non trouvé"));
+  @Transactional
+  public void updateDossier(DossierCredit dossierCredit) {
+      long id = dossierCredit.getId();
 
-        // 2. Load existing compte from DB
-        Compte existingCompte = compteRepository.findById(dossierCredit.getCompte().getId())
-                .orElseThrow(() -> new RuntimeException("Compte not found"));
+      if (!dossierCreditRepository.existsById(id)) {
+          throw new IllegalStateException("DossierCredit non trouvé");
+      }
 
-        // 3. Update fields of existing dossier manually
-        existingDossier.setAgence(dossierCredit.getAgence());
-        existingDossier.setAssigneA(dossierCredit.getAssigneA());
-        existingDossier.setCreePar(dossierCredit.getCreePar());
-        existingDossier.setDateCreation(dossierCredit.getDateCreation());
-        existingDossier.setDateModification(dossierCredit.getDateModification());
-        existingDossier.setMarche(dossierCredit.getMarche());
-        existingDossier.setModifiePar(dossierCredit.getModifiePar());
-        existingDossier.setStatus(dossierCredit.getStatus());
+      dossierCreditRepository.save(dossierCredit);
+  }
 
-        // 4. Set existing compte reference
-        existingDossier.setCompte(existingCompte);
-
-        // 5. Save updated dossier
-        dossierCreditRepository.save(existingDossier);
-    }
 
     @Transactional
     public void deleteDossierById(long id) {

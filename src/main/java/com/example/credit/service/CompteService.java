@@ -33,63 +33,16 @@ public class CompteService {
         compteRepository.save(compte);
     }
 
-    @Transactional
-    public void updateCompte(Compte updatedCompte) {
-        Long id = updatedCompte.getId();
-        if (id == null || !compteRepository.existsById(id)) {
-            throw new IllegalStateException("Compte non trouvé");
-        }
+@Transactional
+public void updateCompte(Compte compte) {
+    Long id = compte.getId();
 
-        Compte existingCompte = compteRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Compte non trouvé"));
-
-        // Update basic fields
-        existingCompte.setDateOuverture(updatedCompte.getDateOuverture());
-        existingCompte.setChapitre(updatedCompte.getChapitre());
-
-        // Update documents (optional: more advanced merging can be done if needed)
-        existingCompte.getDocuments().clear();
-        if (updatedCompte.getDocuments() != null) {
-            updatedCompte.getDocuments().forEach(doc -> {
-                doc.setCompte(existingCompte); // maintain relationship
-                existingCompte.getDocuments().add(doc);
-            });
-        }
-
-        // Update client if needed (optional, usually shouldn't change on update)
-        existingCompte.setClient(updatedCompte.getClient());
-
-        // Handle DossierCredit
-        if (updatedCompte.getDc() != null) {
-            DossierCredit updatedDC = updatedCompte.getDc();
-            DossierCredit existingDC = existingCompte.getDc();
-
-            if (existingDC == null) {
-                updatedDC.setCompte(existingCompte);
-                existingCompte.setDc(updatedDC);
-            } else {
-                existingDC.setStatus(updatedDC.getStatus());
-                existingDC.setAgence(updatedDC.getAgence());
-                existingDC.setModifiePar(updatedDC.getModifiePar());
-                existingDC.setCreePar(updatedDC.getCreePar());
-                existingDC.setAssigneA(updatedDC.getAssigneA());
-                existingDC.setDateCreation(updatedDC.getDateCreation());
-                existingDC.setDateModification(updatedDC.getDateModification());
-                existingDC.setMarche(updatedDC.getMarche());
-
-                // Update lignesCredit
-                existingDC.getLignesCredit().clear();
-                if (updatedDC.getLignesCredit() != null) {
-                    updatedDC.getLignesCredit().forEach(lc -> {
-                        lc.setDossier(existingDC); // maintain relationship
-                        existingDC.getLignesCredit().add(lc);
-                    });
-                }
-            }
-        }
-
-        compteRepository.save(existingCompte);
+    if (id == null || !compteRepository.existsById(id)) {
+        throw new IllegalStateException("Compte non trouvé");
     }
+
+    compteRepository.save(compte);
+}
 
     public Compte getCompteByDossier(Long dossierCreditId) {
         return this.compteRepository.findCompteByDcId(dossierCreditId);
