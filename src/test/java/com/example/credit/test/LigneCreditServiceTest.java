@@ -70,11 +70,16 @@ public class LigneCreditServiceTest {
     public void testUpdateLigne_ExistingId_SavesLigne() {
         LigneCredit l = new LigneCredit();
         l.setId(1L);
+
+        // IMPORTANT : mock findById pour éviter NoSuchElementException
         when(ligneCreditRepository.existsById(1L)).thenReturn(true);
+        when(ligneCreditRepository.findById(1L)).thenReturn(Optional.of(l));
+        when(ligneCreditRepository.save(l)).thenReturn(l);
 
         ligneCreditService.updateLigne(l);
 
         verify(ligneCreditRepository).existsById(1L);
+        verify(ligneCreditRepository).findById(1L);
         verify(ligneCreditRepository).save(l);
     }
 
@@ -90,6 +95,7 @@ public class LigneCreditServiceTest {
 
         assertEquals("LigneCredit non trouvée", exception.getMessage());
         verify(ligneCreditRepository).existsById(2L);
+        verify(ligneCreditRepository, never()).findById(anyLong());
         verify(ligneCreditRepository, never()).save(any());
     }
 
