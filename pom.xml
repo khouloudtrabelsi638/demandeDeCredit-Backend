@@ -7,8 +7,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.3</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<version>3.5.4</version>
+		<relativePath />
 	</parent>
 
 	<groupId>com.example</groupId>
@@ -33,7 +33,6 @@
 		<url />
 	</scm>
 
-	<!-- UNE SEULE BALISE PROPERTIES AVEC TOUT -->
 	<properties>
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
@@ -43,6 +42,23 @@
 		<!-- SonarQube Configuration -->
 		<sonar.projectKey>demande-credit-backend</sonar.projectKey>
 		<sonar.host.url>http://sonarqube:9000</sonar.host.url>
+
+		<!-- 🔒 SECURITY FIXES: Override vulnerable dependencies -->
+		<!-- CRITICAL: Tomcat - Fix 6 Critical CVEs -->
+		<tomcat.version>10.1.43</tomcat.version>
+		
+		<!-- HIGH: SnakeYAML - Deserialization vulnerabilities -->
+		<snakeyaml.version>2.5</snakeyaml.version>
+		
+		<!-- HIGH: Logback - Remote code execution -->
+		<logback.version>1.5.19</logback.version>
+		
+		<!-- MEDIUM: Log4j API -->
+		<log4j2.version>2.25.0</log4j2.version>
+		
+		<!-- Optional: OkHttp/Okio updates -->
+		<okhttp.version>4.12.1</okhttp.version>
+		<okio.version>3.7.0</okio.version>
 	</properties>
 
 	<dependencies>
@@ -54,7 +70,6 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>4.12.0</version>
 		</dependency>
 
 		<dependency>
@@ -101,10 +116,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
 
 		<!-- Micrometer pour Prometheus -->
 		<dependency>
@@ -117,6 +128,7 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -157,6 +169,7 @@
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>3.10.0.2594</version>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -177,6 +190,26 @@
 				</executions>
 			</plugin>
 
+			<!-- 🔒 OWASP Dependency-Check Plugin -->
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>12.2.0</version>
+				<configuration>
+					<failBuildOnCVSS>7</failBuildOnCVSS>
+					<suppressionFiles>
+						<suppressionFile>dependency-check-suppressions.xml</suppressionFile>
+					</suppressionFiles>
+					<skip>false</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
