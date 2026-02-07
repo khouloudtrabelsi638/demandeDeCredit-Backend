@@ -10,30 +10,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
-    @Order(1)  // Highest priority - evaluated first
+    @Order(1)
     public SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
         http
-            .securityMatcher("/actuator/**")  // Only matches actuator paths
+            .securityMatcher("/actuator/**")
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()  // Allow all actuator requests
+                .anyRequest().permitAll()
             )
             .csrf(csrf -> csrf.disable());
         
         return http.build();
     }
 
+
     @Bean
-    @Order(2)  // Lower priority
+    @Order(2)
     public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/api-docs/**").permitAll()
-                .anyRequest().permitAll()
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api/**").permitAll()  
+                .anyRequest().authenticated()
             )
-            .csrf(csrf -> csrf.disable());
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable());
         
         return http.build();
     }
