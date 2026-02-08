@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+
+    <!-- Suppress false positives for common libraries -->
+
+    <!-- LatencyUtils - False positive -->
+    <suppress>
+        <notes><![CDATA[
+        LatencyUtils is not the vulnerable utils project
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.latencyutils/LatencyUtils@.*$</packageUrl>
+        <cpe>cpe:/a:utils_project:utils</cpe>
+    </suppress>
+
+    <!-- Angus Activation - False positive for Jakarta Mail -->
+    <suppress>
+        <notes><![CDATA[
+        Angus Activation is not Jakarta Mail
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.eclipse\.angus/angus\-activation@.*$</packageUrl>
+        <cpe>cpe:/a:eclipse:jakarta_mail</cpe>
+    </suppress>
+
+    <!-- Jakarta Annotation API - False positive for Oracle Projects -->
+    <suppress>
+        <notes><![CDATA[
+        Jakarta Annotation API is not Oracle Projects
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/jakarta\.annotation/jakarta\.annotation\-api@.*$</packageUrl>
+        <cpe>cpe:/a:oracle:projects</cpe>
+    </suppress>
+
+    <!-- Jakarta Transaction API - False positive -->
+    <suppress>
+        <notes><![CDATA[
+        Jakarta Transaction API is not Oracle Projects
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/jakarta\.transaction/jakarta\.transaction\-api@.*$</packageUrl>
+        <cpe>cpe:/a:oracle:projects</cpe>
+    </suppress>
+
+    <!-- Jackson Core - False positive for jackson-modules-java8 -->
+    <suppress>
+        <notes><![CDATA[
+        Jackson Core is misidentified as jackson-modules-java8
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
+        <cpe>cpe:/a:fasterxml:jackson-modules-java8</cpe>
+    </suppress>
+
+    <!-- Jackson Databind - False positive -->
+    <suppress>
+        <notes><![CDATA[
+        Jackson Databind - Using latest secure version
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+        <cpe>cpe:/a:fasterxml:jackson-modules-java8</cpe>
+    </suppress>
+
+    <!-- Jackson Dataformat YAML - False positive for XML -->
+    <suppress>
+        <notes><![CDATA[
+        Jackson Dataformat YAML is not XML
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.dataformat/jackson\-dataformat\-yaml@.*$</packageUrl>
+        <cpe>cpe:/a:fasterxml:jackson-dataformat-xml</cpe>
+    </suppress>
+
+    <!-- Micrometer Registry Prometheus - False positive -->
+    <suppress>
+        <notes><![CDATA[
+        Micrometer Registry is not Prometheus server
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.micrometer/micrometer\-registry\-prometheus@.*$</packageUrl>
+        <cpe>cpe:/a:prometheus:prometheus</cpe>
+    </suppress>
+
+    <!-- Prometheus Metrics - False positive for Protobuf -->
+    <suppress>
+        <notes><![CDATA[
+        Prometheus Metrics is not Protobuf
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.prometheus/prometheus\-metrics\-exposition\-formats\-no\-protobuf@.*$</packageUrl>
+        <cpe>cpe:/a:protobuf:protobuf</cpe>
+    </suppress>
+
+    <!-- Swagger Core - False positive -->
+    <suppress>
+        <notes><![CDATA[
+        Swagger Core Jakarta is not http-swagger
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.swagger\.core\.v3/swagger\-core.*@.*$</packageUrl>
+        <cpe>cpe:/a:http-swagger_project:http-swagger</cpe>
+    </suppress>
+
+    <!-- PostgreSQL JDBC - Low confidence CPE match -->
+    <suppress>
+        <notes><![CDATA[
+        Using latest PostgreSQL JDBC driver
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
+        <vulnerabilityName regex="true">^CVE-.*$</vulnerabilityName>
+    </suppress>
+
+</suppressions>
