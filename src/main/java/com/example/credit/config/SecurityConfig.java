@@ -34,15 +34,13 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
-    @SuppressWarnings("java:S4502")
     public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
         http
-                // IMPORTANT: Configurer CORS ici
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -51,7 +49,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Déplacer la config CORS ici pour qu'elle soit gérée par Spring Security
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
